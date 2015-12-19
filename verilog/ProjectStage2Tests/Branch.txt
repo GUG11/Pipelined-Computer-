@@ -1,0 +1,21 @@
+@0000 B122 //		LLB R1, 0x22		# R1 = 0xxx22
+@0001 A100 //		LHB R1, 0x00		# R1 = 0x0022
+@0002 B211 //		LLB R2, 0x11		# R2 = 0xxx11
+@0003 A200 //		LHB R2, 0x00		# R2 = 0x0011
+@0004 2210 //		SUB R0, R2, R1		# This should clear the z flag, and set N flag
+@0005 C206 //		B	EQ, FAIL
+@0006 C601 //		B	LT, ARND
+@0007 CE04 //		B 	UNCOND, FAIL    # unconditional branch, ccc=111
+
+@0008 B000 //        ARND:		LLB R0, 0x00		# This should not set the Z flag
+@0009 A000 //		LHB R0, 0x00		# This should not set the Z flag
+@000A C201 //		B 	EQ, FAIL
+@000B CE03 //		B	UNCOND, PASS	# unconditional branch, ccc=111
+	
+@000C BAFF //       FAIL:		LLB R10, 0xFF		# R10 will contain 0xxxFF
+@000D AAFF //		LHB R10, 0xFF		# R10 will contain 0xFFFF (indicates failure)		
+@000E F000 //	    HLT
+
+@000F BBAA //   PASS:		LLB R11, 0xAA		# R11 will contain 0xxxAA
+@0010 ABAA //		LHB R11, 0xAA		# R11 will contain 0xAAAA (indicated pass)
+@0011 F000 //		HLT

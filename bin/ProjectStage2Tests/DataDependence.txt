@@ -1,0 +1,15 @@
+@0000 BE00 // llb R14, 0x00		
+@0001 AE01 // lhb R14, 0x01		#R14 <= 0x0100
+@0002 B106 // llb R1, 0x06		#R1 <= 0x0006
+
+@0003 0114 // add R4, R1, R1 		#R4 <= 0x000C 					//Forwarding R1 from llb
+@0004 2114 // sub R4, R1, R1 		#R4 <= 0x0000 					//Forwarding R1 from llb
+@0005 0142 // add R2, R1, R4 		#R2 <= 0x0006 					//Forwarding R1 from sub and R4 from sub
+@0006 0222 // add R2, R2, R2		#R2 <= 0x000C					//Forwarding R2 from add
+@0007 2111 // sub R1, R1, R1		#R1 <= 0x0000
+@0008 9E11 // sw R1, R14, 0x1 	#mem[0x0101] <= 0x0000 			//Forwarding R1 from sub
+@0009 8E21 // lw R2, R14, 0x1		#R2 <= mem[0x0101] == 0x0000 			//No forwarding needed
+@000A 9E27 // sw R2, R14, 0x7 	#mem[0x0107] <= 0x0000				//Load word stall and forwarding
+@000B 8E37 // lw R3, R14, 0x7		#R3 <= mem[0x0107] == 0x0000			//forwarding from sw
+
+@000C F000 // hlt
